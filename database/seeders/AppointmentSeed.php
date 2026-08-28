@@ -14,7 +14,8 @@ class AppointmentSeed extends Seeder
     public function run(): void
     {
         Appointment::create([
-            'name' => 'DEV',
+            'code' => 'DEV',
+            'name' => 'Desarrollador',
             'description' => 'Desarrollador de software',
         ]);
     }

@@ -23,6 +23,7 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'code' => 'required|string|min:3|max:6',
             'name' => 'required|string|min:5|max:50',
             'description' => 'required|string|min:5',
         ];
@@ -31,6 +32,10 @@ class RoleRequest extends FormRequest
     public function messages()
     {
         return[
+            //Mensajes para el código del rol;
+            'code.required' => 'El código del cargo es obligatorio',
+            'code.min' => 'El código del cargo debe tener como mínimo 3 carácteres',
+            'code.max' => 'El código del cargo debe tener como máximo 5 carácteres',
             //Mesajes para el nombre del rol;
             'name.required' => "El nombre es obligatorio",
             'name.min' =>   'El  nombre debe tener como mínimo 5 carácteres',

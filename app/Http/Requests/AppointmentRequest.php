@@ -23,6 +23,7 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'code' => 'required|string|min:3|max:6',
             'name' => 'required|string|min:5|max:50',
             'description' => 'required|min:5',
         ];
@@ -31,11 +32,15 @@ class AppointmentRequest extends FormRequest
     public function messages()
     {
         return [
-            //Mensajes para el nombre del cargo
+            //Mensajes para el código del cargo;
+            'code.required' => 'El código del cargo es obligatorio',
+            'code.min' => 'El código del cargo debe tener como mínimo 3 carácteres',
+            'code.max' => 'El código del cargo debe tener como máximo 5 carácteres',
+            //Mensajes para el nombre del cargo;
             'name.required' => 'El nombre es obligatorio',
             'name.min' => 'El nombre debe tener como mínimo 5 carácteres',
             'name.max' => 'El nombre debe tener como máximo 50 carácteres',
-            //Mensajes para la descripción del cargo
+            //Mensajes para la descripción del cargo;
             'description.required' => 'La descripción es obligatoria',
             'description.min' => 'La descripción debe tener como mínimo 5 carácteres'
         ];
