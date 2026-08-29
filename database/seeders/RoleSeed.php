@@ -14,7 +14,8 @@ class RoleSeed extends Seeder
     public function run(): void
     {
         Role::create([
-            'name' => 'DEV',
+            'code' => 'DEV',
+            'name' => 'Desarrollador de software',
             'description' => 'El rol desarrollador interactua con todo el sistema sin restricción'
         ]);
     }

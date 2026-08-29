@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->comment('Nombre de la categoría');
+            $table->string('path')->comment('Ruta que se usa para la categoría');
+            $table->string('table_name')->unique()->comment('Nombre de la tabla a la que representa');
             $table->timestamps();
-
-            $table->string('code')->comment('Código del cargo');
-            $table->string('name')->comment('Nombre del cargo');
-            $table->text('description')->comment('Descripción del cargo');
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('categories');
     }
 };
