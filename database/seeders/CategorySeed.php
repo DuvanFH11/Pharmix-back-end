@@ -17,50 +17,66 @@ class CategorySeed extends Seeder
         Siempre que se cree una categoría con su respectiva migración, crear un nuevo registro en esta seed haciendo 
         relación en el campo "table_name" al nombre de la tabla correspondiente.
         */
-        Categories::create(
+        Categories::insert([
             [
                 'name' => 'Usuarios',
                 'path' => 'users_page',
-                'table_name' => 'users'
+                'table_name' => 'users',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Productos',
                 'path' => 'products_page',
-                'table_name' => 'products'
+                'table_name' => 'products',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Roles',
                 'path' => 'roles_page',
-                'table_name' => 'roles'
+                'table_name' => 'roles',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Cargos',
                 'path' => 'appointments_page',
-                'table_name' => 'appointments'
+                'table_name' => 'appointments',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             
             /*Estas son las categorías que se tienen en mente para integrar en el desarrollo. 
             [
                 'name' => 'Pedidos',
                 'path' => 'orders_page',
-                'table_name' => 'orders'
+                'table_name' => 'orders',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Facturas',
                 'path' => 'factures_page',
-                'table_name' => 'factures'
+                'table_name' => 'factures',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Clientes',
                 'path' => 'clients_page',
-                'table_name' => 'clients'
+                'table_name' => 'clients',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'name' => 'Proveedores',
                 'path' => 'providers_page',
-                'table_name' => 'providers'
+                'table_name' => 'providers',
+                'created_at' => now(),
+                'updated_at' => now()
             ]
             */
-        );
+        ]);
     }
 }
