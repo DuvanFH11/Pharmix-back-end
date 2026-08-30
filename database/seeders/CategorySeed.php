@@ -23,28 +23,28 @@ class CategorySeed extends Seeder
                 'path' => 'users_page',
                 'table_name' => 'users',
                 'created_at' => now(),
-                'updated_at' => now()
+                // 'updated_at' => now()
             ],
             [
                 'name' => 'Productos',
                 'path' => 'products_page',
                 'table_name' => 'products',
                 'created_at' => now(),
-                'updated_at' => now()
+                // 'updated_at' => now()
             ],
             [
                 'name' => 'Roles',
                 'path' => 'roles_page',
                 'table_name' => 'roles',
                 'created_at' => now(),
-                'updated_at' => now()
+                // 'updated_at' => now()
             ],
             [
                 'name' => 'Cargos',
                 'path' => 'appointments_page',
                 'table_name' => 'appointments',
                 'created_at' => now(),
-                'updated_at' => now()
+                // 'updated_at' => now()
             ],
             
             /*Estas son las categorías que se tienen en mente para integrar en el desarrollo. 

@@ -1,8 +1,11 @@
 <?php 
 namespace App\Services;
 use App\Models\User;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 
 
@@ -17,7 +20,19 @@ Class UserService{
     }
 
     public function create(array $data){
-        return $this->model->create($data);
+        try{
+            DB::beginTransaction(); //Iniciamos transacción. 
+            $response = $this->model->create($data);
+            DB::commit();
+            return $response;
+        }catch(QueryException $e){
+            DB::rollBack();
+            throw $e; //Retornamos error de consulta;
+        }catch(Exception $e){
+            DB::rollback();
+            throw $e; //Retornamos error generico;
+        }
+
     }
 
     public function login(array $data){
