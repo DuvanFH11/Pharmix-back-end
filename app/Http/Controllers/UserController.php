@@ -22,7 +22,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            $response = $this->service->getAll();
+            return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, 'Error al conectar con la base de datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Error inesperado del servidor",500,null,$e->getMessage(), "SERVER_ERROR");
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -75,25 +82,20 @@ class UserController extends Controller
     {
         try{
             $this->service->login($request->validated());
-            return response()->json(['message' => 'Inicio de sesión exitoso'], 200);
+            return $this->handleResponse(true, 'Inicio de sesión exitoso', 200);
         }catch(QueryException $e){
-            return response()->json(['error' => 'No fue posible iniciar sesión: '.$e->getMessage()], 500);
+            return $this->handleResponse(false, 'No fue posible iniciar sesión', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return response()->json([
-                'success' => false,
-                'message' => 'Error inesperado del servidor: '.$e->getMessage(),
-                'error_code' => 'SERVER_ERROR'
-            ]);
+            return $this->handleResponse(false, 'Credenciales incorrectas', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
-
     }
 
     public function logout(Request $request){
         try{
             $this->service->logout($request);
-            return response()->json(['message' => 'Sesión cerrada correctamente'], 200);
+            return $this->handleResponse(true, 'Sesión cerrada correctamente', 200, null);
         }catch(Exception $e){
-            return response()->json(['error' => 'No fue posible iniciar sesión: '.$e->getMessage()], 500);
+            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
 }
