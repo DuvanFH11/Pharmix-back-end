@@ -1,14 +1,25 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:sanctum')->group(function(){
-    //USER
+    //LOGIN Y LOGOUT
     Route::get('/user', [UserController::class, 'show']);
     Route::post('/logout',[UserController::class, 'logout']);
+
+    //USERS
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+
+    //CATEGORIES
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::get('/categories/{category}', [CategoryController::class, 'show']);
 });
 
 Route::post('/register', [UserController::class, 'store']);

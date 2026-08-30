@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             RoleSeed::class,
             AppointmentSeed::class,
             UserSeed::class,
-            CategorySeed::class
+            CategorySeed::class //Siempre después de todas las entidades/categorías que sean cruds;
         ]);
     }
 }
