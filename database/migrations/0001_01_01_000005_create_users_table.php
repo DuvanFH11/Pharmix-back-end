@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('user_creator')->nullable()->constrained('users')->onDelete('set null')->comment('Creado por');
-            $table->foreignId('user_rol')->nullable()->constrained('roles')->onDelete('set null')->comment('Rol del usuario');
+            $table->foreignId('user_role')->nullable()->constrained('roles')->onDelete('set null')->comment('Rol del usuario');
             $table->foreignId('user_appointment')->nullable()->constrained('appointments')->onDelete('set null')->comment('Cargo del usuario');
         });
 

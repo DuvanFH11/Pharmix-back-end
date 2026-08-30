@@ -19,6 +19,10 @@ Class UserService{
         return $request->user();
     }
 
+    public function getAll(){
+        return $this->model->with(['user_role:id,name','user_appointment:id,name'])->get()->toArray(); 
+    }
+
     public function create(array $data){
         try{
             DB::beginTransaction(); //Iniciamos transacción. 

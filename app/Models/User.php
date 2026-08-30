@@ -27,7 +27,7 @@ class User extends Authenticatable
         
         'last_connection',
         
-        'user_rol',
+        'user_role',
         'user_creator',
         'user_appointment',
     ];
@@ -52,8 +52,8 @@ class User extends Authenticatable
 
     }
 
-    public function user_rol(){
-        return $this->belongsTo(Role::class, 'user_rol');
+    public function user_role(){
+        return $this->belongsTo(Role::class, 'user_role');
     } 
 
     public function user_appointment(){
