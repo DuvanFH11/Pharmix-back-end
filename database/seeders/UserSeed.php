@@ -18,10 +18,6 @@ class UserSeed extends Seeder
             'name' => 'Duván Florez',
             'email' => 'desarrollador@administrador.com',
             'password' => Hash::make('desarrollador123'),
-            'age' => 19,
-            
-            'last_connection' => now(),
-            
             'user_role' => 1,
             'user_appointment' => 1,
         ]);
