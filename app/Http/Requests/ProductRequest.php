@@ -24,13 +24,13 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:5|max:50',
             'brand' => 'required|string|min:5|max:50',
-            'description' => 'required|min:5',
-            'unit_price' => 'required|numeric',
-            'package_price' => 'required|numeric',
-            'invima_registration' => 'required|string',
+            'description' => 'required|min:5|max:250',
+            'unit_price' => 'required|numeric|min:0',
+            'package_price' => 'required|numeric|min:0',
+            'invima_registration' => 'required|string|min:5|max:50',
             'is_active' => 'required|boolean',
-            'strength' =>  'required|numeric',
-            'unit' => 'required|string'
+            'strength' =>  'required|numeric|min:0',
+            'unit' => 'required|string|min:1|max:2'
         ];
     }
 
@@ -47,11 +47,15 @@ class ProductRequest extends FormRequest
             //Mensajes para la descripción del producto
             'description.required' => 'La descripción es obligatoria',
             'description.min' => 'La descripción debe tener como mínimo 5 carácteres',
+            'description.max' => 'La descripción debe tener como máximo 250 carácteres',
             //Mensajes para el precio del producto
             'unit_price.required' => 'El precio por unidad es obligatorio',
+            'unit_price.min' => 'El precio por unidad del producto debe ser mayor a 0',
             'package_price.required' => 'El precio por paquete es obligatorio',
+            'package_price.min' => 'El precio por paquete del producto debe ser mayor a 0',
             //Mensajes para el pricipio activo del producto (Gramaje)
             'strength.required' => 'El principio activo es obligatorio',
+            'strength.min' => 'La cantidad de principio activo debe ser mayor a 0',
             //Mensajes para la unidad de medida del pricipio activo
             'unit.required' => 'La unidad de medida es obligatoria',
             'unit.min' => 'La unidad de medida debe tener como mínimo 5 carácteres',

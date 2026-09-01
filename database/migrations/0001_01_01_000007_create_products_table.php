@@ -17,13 +17,13 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name', 50)->comment('Nombre del producto');
             $table->string('brand', 50)->comment('Marca del producto');
-            $table->text('description')->comment('Descripción del producto');
-            $table->decimal('unit_price', 12, 2)->comment('Precio por unidad del producto');
-            $table->decimal('package_price', 12,2)->comment('Precio por paquete del producto');
-            $table->string('invima_registration')->comment('Registro del invima');
+            $table->string('description', 250)->comment('Descripción del producto');
+            $table->decimal('unit_price', 12, 2)->unsigned()->comment('Precio por unidad del producto');
+            $table->decimal('package_price', 12,2)->unsigned()->comment('Precio por paquete del producto');
+            $table->string('invima_registration', 50)->comment('Registro del invima');
             $table->boolean('is_active')->default(true)->comment('Está activo');
-            $table->string('strength')->comment('Cantidad de principio');
-            $table->string('unit')->comment('unidad de medida');
+            $table->decimal('strength', 12,4)->unsigned()->comment('Cantidad de principio');
+            $table->string('unit', 2)->comment('Unidad de medida');
             
             $table->foreignId('user_creator')->nullable()->constrained('users')->onDelete('set null')->comment('Creado por');
         });

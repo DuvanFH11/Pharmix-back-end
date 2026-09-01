@@ -25,10 +25,9 @@ class RoleRequest extends FormRequest
         return [
             'code' => 'required|string|min:3|max:6',
             'name' => 'required|string|min:5|max:50',
-            'description' => 'required|string|min:5',
+            'description' => 'required|string|min:5|max:250',
         ];
     }
-    #[Override]
     public function messages()
     {
         return[
@@ -42,7 +41,8 @@ class RoleRequest extends FormRequest
             'name.max' => 'El nombre debe tener como máximo 50 carácteres',
             //Mensajes para la descripción del rol;
             'description.required' => 'La descripción es obligatoria',
-            'description.min' => 'La descripción debe tener como mínimo 5 carácteres'
+            'description.min' => 'La descripción debe tener como mínimo 5 carácteres',
+            'description.max' => 'La descripción debe tener como máximo 250 carácteres'
         ];
     }
 }
