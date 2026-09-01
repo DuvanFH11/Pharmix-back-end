@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('code')->comment('Código del cargo');
-            $table->string('name')->comment('Nombre del cargo');
-            $table->text('description')->comment('Descripción del cargo');
+            $table->string('code', 6)->comment('Código del cargo');
+            $table->string('name', 50)->comment('Nombre del cargo');
+            $table->string('description', 250)->comment('Descripción del cargo');
         });
     }
 
