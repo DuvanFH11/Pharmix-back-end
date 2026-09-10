@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -49,9 +50,17 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(User $user)
     {
-        return $this->service->show($request);
+        try{
+            $response = $this->service->show($user);
+            return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, 'Error al cargar el usuario', 500, null, $e->getMessage(), 'DATABASE_ERROR');
+        }catch(Exception $e){
+            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), 'SERVER_ERROR' );
+        }
+        // return $this->service->show($request);
     }
 
     /**
