@@ -19,8 +19,20 @@ Class UserService{
         return $user->toArray();
     }
 
+    public function showUserActive($request){
+        // return $request->user();
+        $userId = $request->user()->id;
+
+        $userData = User::select(['id','name','email', 'user_creator', 'user_role', 'user_appointment'])
+            ->withWhereHas('user_role:id,name')
+            ->withWhereHas('user_appointment:id,name')
+            ->find($userId);
+        return $userData;
+    }
+
     public function getAll(){
-        return $this->model->with(['user_role:id,name','user_appointment:id,name'])->get()->toArray(); 
+        return $this->model->select(['id','name','email', 'user_creator', 'user_role', 'user_appointment'])
+        ->with(['user_role:id,name','user_appointment:id,name'])->get()->toArray(); 
     }
 
     public function create(array $data){

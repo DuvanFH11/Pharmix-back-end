@@ -9,6 +9,6 @@ Class RoleService{
     ){}
 
     public function getAll(){
-        return $this->model->all()->toArray();
+        return $this->model->all()->select(['id','code','name', 'description'])->toArray();
     }
 }
