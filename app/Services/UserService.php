@@ -15,8 +15,8 @@ Class UserService{
         protected User $model
     ){}
 
-    public function show($request){
-        return $request->user();
+    public function show(User $user){
+        return $user->toArray();
     }
 
     public function getAll(){
