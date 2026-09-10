@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function(){
     //LOGIN Y LOGOUT
-    Route::get('/user', [UserController::class, 'show']);
+    Route::get('/user', [UserController::class, 'showUser']);
     Route::post('/logout',[UserController::class, 'logout']);
 
     //USERS

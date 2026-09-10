@@ -17,7 +17,9 @@ class UserController extends Controller
         protected UserService $service
     ){}
 
-
+    public function showUser(Request $request){
+        return $this->service->showUserActive($request);
+    }
     /**
      * Display a listing of the resource.
      */
