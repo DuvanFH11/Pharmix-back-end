@@ -25,7 +25,7 @@ class User extends Authenticatable
         'password',
         'user_role',
         'user_creator',
-        'user_appointment',
+        'user_job_title',
     ];
 
     /**
@@ -52,8 +52,8 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'user_role');
     } 
 
-    public function user_appointment(){
-        return $this->belongsTo(Appointment::class, 'user_appointment');
+    public function user_job_title(){
+        return $this->belongsTo(JobTitle::class, 'user_job_title');
     }
 
     public function name(){

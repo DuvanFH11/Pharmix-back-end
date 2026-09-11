@@ -1,12 +1,12 @@
 <?php
 namespace App\Services;
 
-use App\Models\Appointment;
+use App\Models\JobTitle;
 
-Class AppointmentService{
+Class JobTitleService{
 
     public function __construct(
-        protected Appointment $model
+        protected JobTitle $model
     ){}
 
 

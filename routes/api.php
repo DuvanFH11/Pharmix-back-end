@@ -1,7 +1,6 @@
 <?php
-
-use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -30,9 +29,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/roles/{role}', [RoleController::class, 'show']);
 
     // APPOINTMENTS
-    Route::get('/appointments', [AppointmentController::class, 'index']);
-    Route::post('/appointmets', [AppointmentController::class, 'store']);
-    Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']);
+    Route::get('/appointments', [JobTitleController::class, 'index']);
+    Route::post('/appointmets', [JobTitleController::class, 'store']);
+    Route::get('/appointments/{appointment}', [JobTitleController::class, 'show']);
 
     //CATEGORIES
     Route::get('/categories', [CategoryController::class, 'index']);

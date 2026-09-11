@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AppointmentRequest;
-use App\Models\Appointment;
-use App\Services\AppointmentService;
+use App\Http\Requests\JobTitleRequest;
+use App\Models\JobTitle;
+use App\Services\JobTitleService;
 use Exception;
 use Illuminate\Database\QueryException;
 
-class AppointmentController extends Controller
+class JobTitleController extends Controller
 {
     public function __construct(
-        protected AppointmentService $service
+        protected JobTitleService $service
     ){}
     /**
      * Display a listing of the resource.
@@ -39,7 +39,7 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AppointmentRequest $request)
+    public function store(JobTitleRequest $request)
     {
         //
     }
@@ -47,7 +47,7 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Appointment $appointment)
+    public function show(JobTitle $jobTitle)
     {
         //
     }
@@ -55,7 +55,7 @@ class AppointmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Appointment $appointment)
+    public function edit(JobTitle $jobTitle)
     {
         //
     }
@@ -63,7 +63,7 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AppointmentRequest $request, Appointment $appointment)
+    public function update(JobTitleRequest $request, JobTitle $jobTitle)
     {
         //
     }
@@ -71,7 +71,7 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Appointment $appointment)
+    public function destroy(JobTitle $jobTitle)
     {
         //
     }
