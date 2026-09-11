@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Appointment;
+use App\Models\JobTitle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AppointmentSeed extends Seeder
+class JobTitleSeed extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Appointment::create([
+        JobTitle::create([
             'code' => 'DEV',
             'name' => 'Desarrollador',
             'description' => 'Desarrollador de software',

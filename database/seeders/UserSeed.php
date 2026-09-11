@@ -19,7 +19,7 @@ class UserSeed extends Seeder
             'email' => 'desarrollador@administrador.com',
             'password' => Hash::make('desarrollador123'),
             'user_role' => 1,
-            'user_appointment' => 1,
+            'user_job_title' => 1,
         ]);
     }
 }

@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeed::class,
-            AppointmentSeed::class,
+            JobTitleSeed::class,
             UserSeed::class,
             CategorySeed::class //Siempre después de todas las entidades/categorías que sean cruds;
         ]);

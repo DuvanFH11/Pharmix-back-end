@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string|min:10|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:5',
-            'user_appointment' => 'required|number',
+            'user_job_title' => 'required|number',
             'user_rol' => 'required|number',
         ];
     }
@@ -45,7 +45,7 @@ class UserRequest extends FormRequest
             'password.required' => 'La contraseña es obligatoria',
             'password.min' => 'La contraseña debe tener mínimo 5 carácteres',
             //Mensajes para el cargo del usuario;
-            'user_appointment.required' => 'El cargo es obligatorio',
+            'user_job_title.required' => 'El cargo es obligatorio',
             //Mensajes para el rol del usuario;
             'user_rol.required' => 'El rol es obligatorio',
         ];
