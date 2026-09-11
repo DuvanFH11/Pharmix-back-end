@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'user_role');
     } 
 
-    public function user_appointment(){
+    public function user_job_title(){
         return $this->belongsTo(JobTitle::class, 'user_job_title');
     }
 
