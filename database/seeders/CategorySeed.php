@@ -41,8 +41,8 @@ class CategorySeed extends Seeder
             ],
             [
                 'name' => 'Cargos',
-                'path' => 'appointments_page',
-                'table_name' => 'appointments',
+                'path' => 'job_titles_page',
+                'table_name' => 'job_titles',
                 'created_at' => now(),
                 // 'updated_at' => now()
             ],
