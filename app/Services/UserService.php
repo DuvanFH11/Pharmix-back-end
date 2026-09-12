@@ -16,7 +16,8 @@ Class UserService{
     ){}
 
     public function show(User $user){
-        return $user->toArray();
+        $userId = $user->id;
+        return $this->model->select(['id', 'name', 'email','user_creator', 'user_role', 'user_job_title'])->find($userId)->toArray();
     }
 
     public function showUserActive($request){
@@ -33,6 +34,21 @@ Class UserService{
     public function getAll(){
         return $this->model->select(['id','name','email', 'user_creator', 'user_role', 'user_job_title'])
         ->with(['user_role:id,name','user_job_title:id,name'])->get()->toArray(); 
+    }
+
+    public function storeOrUpdate($data){
+        try{
+            DB::beginTransaction();
+            $response = User::storeOrUpdate(data);
+            DB::commit();
+        }catch(QueryException $e){
+            DB::rollBack();
+            throw $e;
+        }catch(QueryException $e){
+            DB::rollBack();
+            throw $e;
+        }
+
     }
 
     public function create(array $data){

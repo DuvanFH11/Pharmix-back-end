@@ -34,18 +34,15 @@ class UserController extends Controller
             return $this->handleResponse(false, "Error inesperado del servidor",500,null,$e->getMessage(), "SERVER_ERROR");
         }
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserRequest $request)
-    {
+    
+    public function storeOrUpdate(UserRequest $userRequest){
         try{
-            $response = $this->service->create($request->validated());
-            return $this->handleResponse(true, 'Se ha creado el usuario correctamente', 201, $response);
+            $response = $this->service->storeOrUpdate($userRequest);
+            return $this->handleResponse(true, 'Se guardaron los datos correctamente',200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al crear el usuario', 500, null ,$e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Error al guardar los datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null , $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
 
@@ -72,14 +69,27 @@ class UserController extends Controller
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // /**
+    //  * Store a newly created resource in storage.
+    //  */
+    // public function store(UserRequest $request)
+    // {
+    //     try{
+    //         $response = $this->service->create($request->validated());
+    //         return $this->handleResponse(true, 'Se ha creado el usuario correctamente', 201, $response);
+    //     }catch(QueryException $e){
+    //         return $this->handleResponse(false, 'Error al crear el usuario', 500, null ,$e->getMessage(), "DATABASE_ERROR");
+    //     }catch(Exception $e){
+    //         return $this->handleResponse(false, 'Error inesperado del servidor', 500, null , $e->getMessage(), "SERVER_ERROR");
+    //     }
+    // }
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(Request $request, string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
