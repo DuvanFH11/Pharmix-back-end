@@ -35,9 +35,9 @@ class UserController extends Controller
         }
     }
     
-    public function storeOrUpdate(UserRequest $userRequest){
+    public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
         try{
-            $response = $this->service->storeOrUpdate($userRequest);
+            $response = $this->service->storeOrUpdate($userRequest, $userId);
             return $this->handleResponse(true, 'Se guardaron los datos correctamente',200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Error al guardar los datos', 500, null, $e->getMessage(), "DATABASE_ERROR");

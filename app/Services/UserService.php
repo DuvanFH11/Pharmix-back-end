@@ -36,10 +36,20 @@ Class UserService{
         ->with(['user_role:id,name','user_job_title:id,name'])->get()->toArray(); 
     }
 
-    public function storeOrUpdate($data){
+    public function storeOrUpdate($data,$id){
         try{
+            $userData = [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'user_role' => $data['user_role'],
+                'user_job_title' => $data['user_job_title']    
+            ];
+            if(!$id){
+                $userData['password'] = $data['email'];
+            }
+
             DB::beginTransaction();
-            $response = User::storeOrUpdate(data);
+            User::updateOrCreate(['id' => $id],$userData);
             DB::commit();
         }catch(QueryException $e){
             DB::rollBack();

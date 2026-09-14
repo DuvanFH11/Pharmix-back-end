@@ -15,30 +15,27 @@ Route::middleware('auth:sanctum')->group(function(){
 
     //USERS
     Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::post('/users/save/{id?}', [UserController::class, 'storeOrUpdate']);
 
     //PRODUCTS
     Route::get('/products', [ProductController::class, 'index']);
-    Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{product}', [ProductController::class, 'show']);
+    Route::post('/products/save/{id?}', [ProductController::class, 'storeOrUpdate']);
     
     //ROLES
     Route::get('/roles', [RoleController::class, 'index']);
-    Route::post('/roles', [RoleController::class, 'store']);
     Route::post('/roles/{role}', [RoleController::class, 'show']);
+    Route::post('/roles/save/{id?}', [RoleController::class, 'storeOrUpdate']);
 
     // APPOINTMENTS
-    Route::get('/appointments', [JobTitleController::class, 'index']);
-    Route::post('/appointmets', [JobTitleController::class, 'store']);
-    Route::get('/appointments/{appointment}', [JobTitleController::class, 'show']);
+    Route::get('/job_titles', [JobTitleController::class, 'index']);
+    Route::get('/job_titles/{job_title}', [JobTitleController::class, 'show']);
+    Route::post('/job_titles/save/{id?}', [JobTitleController::class, 'storeOrUpdate']);
 
     //CATEGORIES
     Route::get('/categories', [CategoryController::class, 'index']);
-    Route::post('/categories', [CategoryController::class, 'store']);
     Route::get('/categories/{category}', [CategoryController::class, 'show']);
-
-    //APPOINTMENTS
 
 });
 
