@@ -10,7 +10,7 @@ Class CategoryService{
 
 
     public function getAll(){
-        return $this->model->all()->toArray();
+        return $this->model->all()->select(['id','name', 'path'])->toArray();
     }
 
     public function create(){

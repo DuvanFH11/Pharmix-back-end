@@ -21,7 +21,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreignId('user_creator')->nullable()->constrained('users')->onDelete('set null')->comment('Creado por');
             $table->foreignId('user_role')->nullable()->constrained('roles')->onDelete('set null')->comment('Rol del usuario');
             $table->foreignId('user_job_title')->nullable()->constrained('job_titles')->onDelete('set null')->comment('Cargo del usuario');
         });
