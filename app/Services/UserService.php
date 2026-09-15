@@ -17,14 +17,14 @@ Class UserService{
 
     public function show(User $user){
         $userId = $user->id;
-        return $this->model->select(['id', 'name', 'email','user_creator', 'user_role', 'user_job_title'])->find($userId)->toArray();
+        return $this->model->select(['id', 'name', 'email', 'user_role', 'user_job_title'])->find($userId)->toArray();
     }
 
     public function showUserActive($request){
         // return $request->user();
         $userId = $request->user()->id;
 
-        $userData = User::select(['id','name','email', 'user_creator', 'user_role', 'user_job_title'])
+        $userData = User::select(['id','name','email', 'user_role', 'user_job_title'])
             ->withWhereHas('user_role:id,name')
             ->withWhereHas('user_job_title:id,name')
             ->find($userId);
@@ -32,7 +32,7 @@ Class UserService{
     }
 
     public function getAll(){
-        return $this->model->select(['id','name','email', 'user_creator', 'user_role', 'user_job_title'])
+        return $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
         ->with(['user_role:id,name','user_job_title:id,name'])->get()->toArray(); 
     }
 

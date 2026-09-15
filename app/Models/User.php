@@ -24,7 +24,6 @@ class User extends Authenticatable
         'email',
         'password',
         'user_role',
-        'user_creator',
         'user_job_title',
     ];
 
@@ -43,10 +42,6 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    public function user_creator(){
-        return $this->belongsTo(User::class, 'user_creator');
-
-    }
 
     public function user_role(){
         return $this->belongsTo(Role::class, 'user_role');
