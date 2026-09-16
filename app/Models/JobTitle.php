@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class JobTitle extends Model
 {
     protected $fillable = [
+        'code',
         'name',
         'description'
     ];
