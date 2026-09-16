@@ -15,8 +15,7 @@ Class UserService{
         protected User $model
     ){}
 
-    public function show(User $user){
-        $userId = $user->id;
+    public function show(int $userId){
         return $this->model->select(['id', 'name', 'email', 'user_role', 'user_job_title'])->find($userId)->toArray();
     }
 

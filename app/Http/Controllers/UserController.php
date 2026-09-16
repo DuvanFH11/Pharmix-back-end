@@ -49,10 +49,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Int $userId)
     {
         try{
-            $response = $this->service->show($user);
+            $response = $this->service->show($userId);
             return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Error al cargar el usuario', 500, null, $e->getMessage(), 'DATABASE_ERROR');

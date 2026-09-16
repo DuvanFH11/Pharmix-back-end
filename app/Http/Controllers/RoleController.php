@@ -27,7 +27,16 @@ class RoleController extends Controller
             return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
-
+    public function storeOrUpdate(RoleRequest $roleRequest, ?int $id = null){
+        try{
+            $response = $this->service->storeOrUpdate($roleRequest, $id);
+            return $this->handleResponse(true, "Se guardaron los datos correctamente", 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Error al guardar los datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Error inesperado del servidor", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -47,9 +56,16 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Role $roles)
+    public function show(int $roleId)
     {
-        //
+        try{
+            $response = $this->service->show($roleId);
+            return $this->handleResponse(true, "Rol cargado con correctamente", 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Error al conectar con la base de datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Error interno del servidor", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }
     }
 
     /**
