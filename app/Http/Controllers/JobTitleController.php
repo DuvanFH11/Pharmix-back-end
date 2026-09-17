@@ -22,34 +22,36 @@ class JobTitleController extends Controller
             $response = $this->service->getAll();
             return $this->handleResponse(true, 'Se cargaron los cargos correctamente', 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al conectar con la base de datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(JobTitleRequest $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(JobTitle $jobTitle)
+    public function show(int $jobTitleId)
     {
-        //
+        try{
+            $response = $this->service->show($jobTitleId);
+            return $this->handleResponse(true, "Se cargó el cargo correctamente", 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "El sistema no está disponible temporalmente, intentalo más tarde.", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }   
+    }
+
+    public function storeOrUpdate(JobTitleRequest $jobTitleRequest, ?int $id = null){
+        try{
+            $response = $this->service->storeOrUpdate($jobTitleRequest, $id);
+            return $this->handleResponse(true, "Datos guardados correctamente", 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "El sistema no está disponible temporalmente, intentalo más tarde.", 500, null, $e->getMessage(),"SERVER_ERROR");
+        }
     }
 
     /**
