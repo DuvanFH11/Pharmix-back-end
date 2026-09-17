@@ -29,20 +29,20 @@ class UserController extends Controller
             $response = $this->service->getAll();
             return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al conectar con la base de datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, "Error inesperado del servidor",500,null,$e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
     
     public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
         try{
             $response = $this->service->storeOrUpdate($userRequest, $userId);
-            return $this->handleResponse(true, 'Se guardaron los datos correctamente',200, $response);
+            return $this->handleResponse(true, 'Datos guardados correctamente',200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al guardar los datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
 
@@ -55,9 +55,9 @@ class UserController extends Controller
             $response = $this->service->show($userId);
             return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al cargar el usuario', 500, null, $e->getMessage(), 'DATABASE_ERROR');
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), 'SERVER_ERROR' );
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
         // return $this->service->show($request);
     }

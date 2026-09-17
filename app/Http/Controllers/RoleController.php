@@ -22,19 +22,19 @@ class RoleController extends Controller
             $response = $this->service->getAll();
             return $this->handleResponse(true, 'Se cargaron los roles correctamente', 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, 'Error al conectar con la base de datos', 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
     public function storeOrUpdate(RoleRequest $roleRequest, ?int $id = null){
         try{
             $response = $this->service->storeOrUpdate($roleRequest, $id);
-            return $this->handleResponse(true, "Se guardaron los datos correctamente", 200, $response);
+            return $this->handleResponse(true, "Datos guardados correctamente", 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, "Error al guardar los datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, "Error inesperado del servidor", 500, null, $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
     /**
@@ -62,9 +62,9 @@ class RoleController extends Controller
             $response = $this->service->show($roleId);
             return $this->handleResponse(true, "Rol cargado con correctamente", 200, $response);
         }catch(QueryException $e){
-            return $this->handleResponse(false, "Error al conectar con la base de datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
-            return $this->handleResponse(false, "Error interno del servidor", 500, null, $e->getMessage(), "SERVER_ERROR");
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
 
