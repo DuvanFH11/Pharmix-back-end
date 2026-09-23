@@ -47,9 +47,16 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Int $productId)
     {
-        //
+        try{
+            $response = $this->service->show($productId);
+            return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
+        }
     }
 
     /**
