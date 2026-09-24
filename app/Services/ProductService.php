@@ -13,12 +13,11 @@ Class ProductService{
     ){}
 
     public function getAll(){
-        return $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit', 'user_creator'])
-        ->with(['user_creator:id, name'])->get()->toArray();
+        return $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])->get()->toArray();
     }
 
     public function show($productId){
-        return $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit', 'user_creator'])
+        return $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])
         ->find($productId)->toArray();
     }
 
@@ -32,22 +31,17 @@ Class ProductService{
                 'unit_price' => $data['unit_price'],
                 'invima_registration' => $data['invima_registration'],
                 'strength' => $data['strength'],
-                'unit' => $data['unit'],
-                'is_active' => $data['is_active']
+                'unit' => $data['unit']
             ];
-            if(!$id){
-                $productData = [
-                    'user_creator' => Auth::id(),
-                    'is_active' => true
-                ];
-            }
             DB::beginTransaction(); 
                 Product::updateOrcreate(['id' => $id], $productData);
             DB::commit();
         }catch(QueryException $e){
             DB::rollBack();
+            throw $e;
         }catch(Exception $e){
             DB::rollBack();
+            throw $e;
         }
     }
 }
