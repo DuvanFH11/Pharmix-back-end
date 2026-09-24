@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Product;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 Class ProductService{
@@ -32,8 +33,14 @@ Class ProductService{
                 'invima_registration' => $data['invima_registration'],
                 'strength' => $data['strength'],
                 'unit' => $data['unit'],
-                'is_active' => true
+                'is_active' => $data['is_active']
             ];
+            if(!$id){
+                $productData = [
+                    'user_creator' => Auth::id(),
+                    'is_active' => true
+                ];
+            }
             DB::beginTransaction(); 
                 Product::updateOrcreate(['id' => $id], $productData);
             DB::commit();
