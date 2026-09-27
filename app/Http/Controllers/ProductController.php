@@ -16,10 +16,10 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(?String $value=null)
     {
         try{
-            $response = $this->service->getAll();
+            $response = $this->service->getAll($value);
             return $this->handleResponse(true, "Se cargaron los productos correctamente", 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, "Error al conectar con la base de datos", 500, null, $e->getMessage(), "DATABASE_ERROR");

@@ -16,10 +16,10 @@ class JobTitleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(?String $jobTitleCode = null)
     {
         try{
-            $response = $this->service->getAll();
+            $response = $this->service->getAll($jobTitleCode);
             return $this->handleResponse(true, 'Se cargaron los cargos correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");

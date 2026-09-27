@@ -30,9 +30,13 @@ Class UserService{
         return $userData;
     }
 
-    public function getAll(){
+    public function getAll($userEmail){
         return $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
-        ->with(['user_role:id,name','user_job_title:id,name'])->get()->toArray(); 
+        ->with(['user_role:id,name','user_job_title:id,name'])
+        ->when($userEmail, function ($query, $userEmail){
+            return $query->where('email', 'LIKE', '%'.$userEmail.'%');
+        })
+        ->get()->toArray(); 
     }
 
     public function storeOrUpdate($data,$id){

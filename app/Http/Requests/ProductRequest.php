@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
             'description' => 'required|min:5|max:250',
             'unit_price' => 'required|numeric|min:0',
             'package_price' => 'required|numeric|min:0',
-            'invima_registration' => 'required|string|min:5|max:50',
+            'invima_registration' => 'required|string|min:5|max:50|unique::products,invima_registration',
             'strength' =>  'required|numeric|min:0',
             'unit' => 'required|string|min:1|max:2'
         ];
@@ -52,6 +52,11 @@ class ProductRequest extends FormRequest
             'unit_price.min' => 'El precio por unidad del producto debe ser mayor a 0',
             'package_price.required' => 'El precio por paquete es obligatorio',
             'package_price.min' => 'El precio por paquete del producto debe ser mayor a 0',
+            //Mensajes para el registro sanitario del invima
+            'invima_registration.required' => 'El registro del invima debe ser obligatorio',
+            'invima_registration.min' => 'El registro del invima debe ser mayor a 5',
+            'invima_registration.max' => 'El registro del invima debe ser menor a 50',
+            'invima_registration.unique' => 'Ya existe un producto con este registro, verifique por favor',
             //Mensajes para el pricipio activo del producto (Gramaje)
             'strength.required' => 'El principio activo es obligatorio',
             'strength.min' => 'La cantidad de principio activo debe ser mayor a 0',

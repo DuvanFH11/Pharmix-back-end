@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             
-            $table->string('code', 6)->comment('Código del rol');
+            $table->string('code', 6)->unique()->comment('Código del rol');
             $table->string('name', 50)->comment('Nombre del rol');
             $table->string('description', 250)->comment('Descripción del rol');
         });
