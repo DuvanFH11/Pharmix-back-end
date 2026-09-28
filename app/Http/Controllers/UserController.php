@@ -23,10 +23,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?String $userEmail = null)
+    public function index(Request $request)
     {
         try{
-            $response = $this->service->getAll($userEmail);
+            $response = $this->service->getAll($request->query('email'));
             return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
