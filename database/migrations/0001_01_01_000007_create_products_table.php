@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('description', 250)->comment('Descripción del producto');
             $table->unsignedBigInteger('unit_price')->comment('Precio por unidad del producto');
             $table->unsignedBigInteger('package_price')->comment('Precio por paquete del producto');
-            $table->string('invima_registration', 50)->comment('Registro del invima');
+            $table->string('invima_registration', 50)->unique()->comment('Registro del invima');
             $table->decimal('strength', 8,2)->unsigned()->comment('Cantidad de principio');
             $table->string('unit', 2)->comment('Unidad de medida');
         });

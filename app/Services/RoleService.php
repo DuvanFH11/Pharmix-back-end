@@ -11,8 +11,13 @@ Class RoleService{
         protected Role $model
     ){}
 
-    public function getAll(){
-        return $this->model->all()->select(['id','code','name', 'description'])->toArray();
+    public function getAll($roleCode){
+        return $this->model->select(['id','code','name', 'description'])
+        ->when($roleCode, function($query, $roleCode){
+            return $query->where('code', 'LIKE', '%'.$roleCode.'%');
+        })
+        ->get()
+        ->toArray();
     }
     public function show(int $roleId){
         return $this->model->select(['id','code','name', 'description'])->find($roleId)->toArray();

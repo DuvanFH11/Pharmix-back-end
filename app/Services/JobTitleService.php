@@ -13,8 +13,13 @@ Class JobTitleService{
     ){}
 
 
-    public function getAll(){
-        return $this->model->all()->select(['id', 'code', 'name', 'description'])->toArray();
+    public function getAll($jobTitleCode){
+        return $this->model->select(['id', 'code', 'name', 'description'])
+        ->when($jobTitleCode, function($query, $jobTitleCode){
+            return $query->where('code', 'LIKE', '%'. $jobTitleCode .'%');
+        })
+        ->get()
+        ->toArray();
     }
     
     public function show(int $jobTitleId){
