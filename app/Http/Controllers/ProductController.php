@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -16,10 +17,10 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?String $value=null)
+    public function index(Request $request)
     {
         try{
-            $response = $this->service->getAll($value);
+            $response = $this->service->getAll($request->query('value'));
             return $this->handleResponse(true, "Se cargaron los productos correctamente", 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, "Error al conectar con la base de datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
