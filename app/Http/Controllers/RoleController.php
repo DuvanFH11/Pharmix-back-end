@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Services\RoleService;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -16,10 +17,10 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?String $roleCode = null)
+    public function index(Request $request)
     {
         try{
-            $response = $this->service->getAll($roleCode);
+            $response = $this->service->getAll($request->query('code'));
             return $this->handleResponse(true, 'Se cargaron los roles correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
