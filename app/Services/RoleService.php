@@ -19,9 +19,11 @@ Class RoleService{
         ->get()
         ->toArray();
     }
+
     public function show(int $roleId){
         return $this->model->select(['id','code','name', 'description'])->find($roleId)->toArray();
     }
+
     public function storeOrUpdate($data, $id){
         try{
             $roleData = [
