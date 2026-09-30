@@ -7,6 +7,7 @@ use App\Models\JobTitle;
 use App\Services\JobTitleService;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class JobTitleController extends Controller
 {
@@ -16,10 +17,10 @@ class JobTitleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?String $jobTitleCode = null)
+    public function index(Request $request)
     {
         try{
-            $response = $this->service->getAll($jobTitleCode);
+            $response = $this->service->getAll($request->query('code'));
             return $this->handleResponse(true, 'Se cargaron los cargos correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
