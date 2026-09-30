@@ -20,7 +20,7 @@ Class ProductService{
                         ->orWhere('name', 'LIKE', '%'.$value.'%');
             });
         })
-        ->pagine(4);
+        ->paginate(4);
 
         return ([
             "data" => $products->items(),
