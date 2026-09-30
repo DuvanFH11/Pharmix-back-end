@@ -14,12 +14,17 @@ Class JobTitleService{
 
 
     public function getAll($jobTitleCode){
-        return $this->model->select(['id', 'code', 'name', 'description'])
+        $jobTitles = $this->model->select(['id', 'code', 'name', 'description'])
         ->when($jobTitleCode, function($query, $jobTitleCode){
             return $query->where('code', 'LIKE', '%'. $jobTitleCode .'%');
         })
-        ->get()
-        ->toArray();
+        ->paginate(4);
+
+        return([
+            "data" => $jobTitles->items(),
+            "total" => $jobTitles->total(),
+            "per_page" => $jobTitles->perPage()
+        ]);
     }
     
     public function show(int $jobTitleId){

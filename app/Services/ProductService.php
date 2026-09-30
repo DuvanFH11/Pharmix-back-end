@@ -13,15 +13,20 @@ Class ProductService{
     ){}
 
     public function getAll($value){
-        return $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])
+        $products = $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])
          ->when($value, function($query, $value){
             return $query->where(function($subquery) use ($value) {
                 $subquery->where('invima_registration', 'LIKE', '%'.$value.'%')
                         ->orWhere('name', 'LIKE', '%'.$value.'%');
             });
         })
-        ->get()
-        ->toArray();
+        ->pagine(4);
+
+        return ([
+            "data" => $products->items(),
+            "total" => $products->total(),
+            "per_page" => $products->perPage()
+        ]); 
     }
 
     public function show($productId){
