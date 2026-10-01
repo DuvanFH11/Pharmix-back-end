@@ -23,7 +23,8 @@ Class JobTitleService{
         return([
             "data" => $jobTitles->items(),
             "total" => $jobTitles->total(),
-            "per_page" => $jobTitles->perPage()
+            "per_page" => $jobTitles->perPage(),
+            "page" => $jobTitles->currentPage()
         ]);
     }
     

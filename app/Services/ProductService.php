@@ -25,7 +25,8 @@ Class ProductService{
         return ([
             "data" => $products->items(),
             "total" => $products->total(),
-            "per_page" => $products->perPage()
+            "per_page" => $products->perPage(),
+            "page" => $products->currentPage()
         ]); 
     }
 

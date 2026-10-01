@@ -20,7 +20,8 @@ Class RoleService{
         return([
             "data" => $roles->items(),
             "total" => $roles->total(),
-            "per_page" => $roles->perPage()
+            "per_page" => $roles->perPage(),
+            "page" => $roles->currentPage()
         ]);
     }
 
