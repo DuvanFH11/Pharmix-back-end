@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 
-
 Class UserService{
     
     public function __construct(
@@ -30,13 +29,21 @@ Class UserService{
         return $userData;
     }
 
-    public function getAll($userEmail){
-        return $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
+    public function getAll($userEmail, $page){
+        
+        $users = $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
         ->with(['user_role:id,name','user_job_title:id,name'])
         ->when($userEmail, function ($query, $userEmail){
             return $query->where('email', 'LIKE', '%'.$userEmail.'%');
         })
-        ->get()->toArray(); 
+        ->paginate(4, ['*'], 'page', $page);
+        // dd($users);
+        return([
+            'data' => $users->items(),
+            'total' => $users->total(),
+            'per_page' => $users->perPage(),
+            'page' => $users->currentPage()
+        ]);
     }
 
     public function storeOrUpdate($data,$id){

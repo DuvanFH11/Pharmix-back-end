@@ -12,12 +12,17 @@ Class RoleService{
     ){}
 
     public function getAll($roleCode){
-        return $this->model->select(['id','code','name', 'description'])
+        $roles =  $this->model->select(['id','code','name', 'description'])
         ->when($roleCode, function($query, $roleCode){
             return $query->where('code', 'LIKE', '%'.$roleCode.'%');
         })
-        ->get()
-        ->toArray();
+        ->paginate(4);
+        return([
+            "data" => $roles->items(),
+            "total" => $roles->total(),
+            "per_page" => $roles->perPage(),
+            "page" => $roles->currentPage()
+        ]);
     }
 
     public function show(int $roleId){

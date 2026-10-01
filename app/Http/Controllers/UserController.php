@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try{
-            $response = $this->service->getAll($request->query('email'));
+            $response = $this->service->getAll($request->query('email'), $request->query('page'));
             return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
         }catch(QueryException $e){
             return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
