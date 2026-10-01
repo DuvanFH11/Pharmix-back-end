@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
             'description' => 'required|min:5|max:250',
             'unit_price' => 'required|numeric|min:0',
             'package_price' => 'required|numeric|min:0',
-            'invima_registration' => 'required|string|min:5|max:50|unique:products,invima_registration',
+            'invima_registration' => 'required|string|min:5|max:50',
             'strength' =>  'required|numeric|min:0',
             'unit' => 'required|string|min:1|max:2'
         ];
