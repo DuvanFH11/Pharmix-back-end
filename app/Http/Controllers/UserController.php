@@ -19,7 +19,7 @@ class UserController extends Controller
     public function __construct(
         protected UserService $service
     ){}
-    
+
     /*Método para sacar la información del usuario que tiene sesión iniciada*/
     public function showUser(Request $request){
         return $this->service->showUserActive($request);
@@ -83,7 +83,7 @@ class UserController extends Controller
             $response = $this->service->sendCode($email);
             return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);
         }catch(QueryException $e){ 
-            return $this->handleResponse(false, "Ocurrió un error al hacer el envío del código, intentelo de nuevo por favor", 500, null, $e->getMessage_(), "DATABASE_ERROR");
+            return $this->handleResponse(false, "Ocurrió un error al hacer el envío del código, intentelo de nuevo por favor", 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
             return $this->handleResponse(false, "Ocurrió un error inesperado en el servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
         }        
