@@ -13,6 +13,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', [UserController::class, 'showUser']);
     Route::post('/logout',[UserController::class, 'logout']);
 
+    //CÓDIGO DE VALIDACIÓN PARA ENVIAR AL EMAIL; 
+    Route::post('/user/code', [UserController::class, 'sendCode']);
+    Route::post('/user/code/verify', [UserController::class, 'verifyCode']);
+    
     //USERS
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);

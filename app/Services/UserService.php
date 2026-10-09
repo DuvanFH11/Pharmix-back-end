@@ -1,12 +1,17 @@
 <?php 
 namespace App\Services;
+
+use App\Exceptions\ExpiredCodeException;
+use App\Exceptions\InvalidCodeException;
+use App\Mail\SendCodeValidationMail;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException as ValidationValidationException;
+use Illuminate\Support\Facades\Mail;
 
 Class UserService{
     
@@ -45,7 +50,6 @@ Class UserService{
             'page' => $users->currentPage()
         ]);
     }
-
     public function storeOrUpdate($data,$id){
         try{
             $userData = [
@@ -86,12 +90,9 @@ Class UserService{
         }
 
     }
-
     public function login(array $data){
         if(!Auth::attempt($data)){
-            throw ValidationValidationException::withMessages([
-                'message' => ['Las credenciales son incorrectas']
-            ]);
+            throw new \Exception('Unauthorized', 401);
         }
         return true;
     }
@@ -101,4 +102,30 @@ Class UserService{
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }
+
+    public function sendCode($email){
+        $code = rand(1000, 9999);
+
+        try{
+            Mail::to($email)->send(new SendCodeValidationMail($code));
+            Cache::put("validation_code_{$email}", $code, now()->addMinute());
+            return true;    
+        }catch(Exception $e){
+            throw new \Exception($e);
+        }
+    }
+
+    public function verifyCode($email, $userInputCode){
+        $savedCode = Cache::get("validation_code_{$email}");
+        if(!$savedCode){
+            throw new ExpiredCodeException("El código ha expirado, solicite otro por favor");
+        }
+        if((int)$savedCode !== $userInputCode){
+            throw new InvalidCodeException("El código ingresado no es válido, ingreselo nuevamente o solicite otro.");
+        }
+
+        Cache::forget("validation_code_{$email}");
+        return true;
+    }
+
 }
