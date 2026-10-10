@@ -1,6 +1,7 @@
 <?php 
 namespace App\Services;
 
+use App\Exceptions\DuplicateCodeException;
 use App\Exceptions\ExpiredCodeException;
 use App\Exceptions\InvalidCodeException;
 use App\Mail\SendCodeValidationMail;
@@ -104,13 +105,17 @@ Class UserService{
     }
 
     public function sendCode($email){
-        $code = rand(1000, 9999);
-        try{
-            Mail::to($email)->send(new SendCodeValidationMail($code));
-            Cache::put("validation_code_{$email}", $code, now()->addMinutes(1));
-            return true;    
-        }catch(Exception $e){
-            throw new \Exception($e->getMessage());
+        if(empty(Cache::get("validation_code_{$email}"))){
+            $code = rand(1000, 9999);
+            try{
+                Mail::to($email)->send(new SendCodeValidationMail($code));
+                Cache::put("validation_code_{$email}", $code, now()->addMinutes(1));
+                return true;    
+            }catch(Exception $e){
+                throw new \Exception($e->getMessage());
+            }
+        }else{
+            throw new DuplicateCodeException('Hay un código activo actualmente');
         }
     }
 

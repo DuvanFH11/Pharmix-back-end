@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DuplicateCodeException;
 use App\Exceptions\ExpiredCodeException;
 use App\Exceptions\InvalidCodeException;
 use App\Http\Requests\LoginRequest;
@@ -82,8 +83,8 @@ class UserController extends Controller
         try{
             $response = $this->service->sendCode($request->input('email'));
             return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);
-        }catch(QueryException $e){ 
-            return $this->handleResponse(false, "Ocurrió un error al hacer el envío del código, intentelo de nuevo por favor", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(DuplicateCodeException $e){ 
+            return $this->handleResponse(false, "Ya existe un código vigente en este momento", 500, null, $e->getMessage(), "DATABASE_ERROR");
         }catch(Exception $e){
             return $this->handleResponse(false, "Ocurrió un error inesperado en el servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
         }        
