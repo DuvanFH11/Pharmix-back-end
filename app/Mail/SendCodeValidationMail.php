@@ -13,7 +13,7 @@ class SendCodeValidationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $code;
+    public $code;
     /**
      * Create a new message instance.
      */
@@ -38,7 +38,7 @@ class SendCodeValidationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            html : $this->constructBody()
+            htmlString: $this->constructBody()
         );
     }
     public function constructBody() {

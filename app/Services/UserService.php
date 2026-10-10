@@ -105,13 +105,12 @@ Class UserService{
 
     public function sendCode($email){
         $code = rand(1000, 9999);
-
         try{
             Mail::to($email)->send(new SendCodeValidationMail($code));
-            Cache::put("validation_code_{$email}", $code, now()->addMinute());
+            Cache::put("validation_code_{$email}", $code, now()->addMinutes(1));
             return true;    
         }catch(Exception $e){
-            throw new \Exception($e);
+            throw new \Exception($e->getMessage());
         }
     }
 

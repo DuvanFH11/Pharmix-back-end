@@ -78,9 +78,9 @@ class UserController extends Controller
     }
 
     /*Método para enviar código por correo al usuario*/
-    public function sendCode(String $email){
+    public function sendCode(Request $request){
         try{
-            $response = $this->service->sendCode($email);
+            $response = $this->service->sendCode($request->input('email'));
             return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);
         }catch(QueryException $e){ 
             return $this->handleResponse(false, "Ocurrió un error al hacer el envío del código, intentelo de nuevo por favor", 500, null, $e->getMessage(), "DATABASE_ERROR");
