@@ -91,14 +91,12 @@ class UserController extends Controller
     }
 
     /*Método para verificar código por correo al usuario*/
-    public function verifyCode(String $email, Int $userInputCode){
+    public function verifyCode(Request $request){
         try{
-            $response = $this->service->verifyCode($email, $userInputCode);
+            $response = $this->service->verifyCode($request->input('email'), $request->input('code'));
             return $this->handleResponse(true, "La validación del código fue correcta.", 200, null);
-        }catch(InvalidCodeException $e){
-            return $this->handleResponse(false,"El código es incorrecto, vuelve a ingresarlo o solicita otro.", 500, null, $e->getMessage(), "SERVER_ERROR");
-        }catch(ExpiredCodeException $e){
-            return $this->handleResponse(false,"El código ha expirado, por favor solicita otro", 500, null, $e->getMessage(), "SERVER_ERRROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false,$e->getMessage(), 400, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
     /*Método para gestionar el login del usuario*/
