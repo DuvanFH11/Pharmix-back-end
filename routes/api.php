@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function(){
     //USERS
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::patch('/users/{id}', [UserController::class, 'edit']);
     Route::post('/users/save/{id?}', [UserController::class, 'storeOrUpdate']);
 
     //PRODUCTS

@@ -91,6 +91,23 @@ Class UserService{
         }
 
     }
+    public function modify(Int $id, String $name, String $email){
+        try{
+            DB::beginTransaction();
+            $user = User::findOrFail($id);
+            $user->name = $name;
+            $user->email = $email;
+            $user->save();
+            DB::commit();
+            return true;
+        }catch(QueryException $e){
+            DB::rollBack();
+            throw $e;
+        }catch(Exception $e){
+            DB::rollBack();
+            throw $e;
+        }
+    }
     public function login(array $data){
         if(!Auth::attempt($data)){
             throw new \Exception('Unauthorized', 401);

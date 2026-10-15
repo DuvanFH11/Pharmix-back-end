@@ -66,9 +66,17 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
-        //
+        try{
+            $this->service->modify($id, $request->input('name'), $request->input('email'));
+            return $this->handleResponse(true, "Datos guardados correctamente", 200, null);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelva a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde',500, null, $e->getMessage(), "SERVER_ERROR");
+        }
+
     }
     /**
      * Remove the specified resource from storage.
