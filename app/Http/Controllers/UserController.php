@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DuplicateCodeException;
+use App\Exceptions\ExpiredCodeException;
+use App\Exceptions\InvalidCodeException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Exception;
+use FFI\Exception as FFIException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
+    /*Instanciamos el servicio para poder usarlo en los métodos*/ 
     public function __construct(
         protected UserService $service
     ){}
 
+    /*Método para sacar la información del usuario que tiene sesión iniciada*/
     public function showUser(Request $request){
         return $this->service->showUserActive($request);
     }
-    /**
-     * Display a listing of the resource.
-     */
+    /* Método para sacar todos los registro de la tabla usuarios*/
     public function index(Request $request)
     {
         try{
@@ -34,7 +37,7 @@ class UserController extends Controller
             return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
-    
+    /*Método para consultar para crear o actualizar un registro*/
     public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
         try{
             $response = $this->service->storeOrUpdate($userRequest, $userId);
@@ -46,9 +49,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+    /*Método para sacar el registro de cualquier usuario por su Id*/
     public function show(Int $userId)
     {
         try{
@@ -65,32 +66,18 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
-        //
-    }
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(UserRequest $request)
-    // {
-    //     try{
-    //         $response = $this->service->create($request->validated());
-    //         return $this->handleResponse(true, 'Se ha creado el usuario correctamente', 201, $response);
-    //     }catch(QueryException $e){
-    //         return $this->handleResponse(false, 'Error al crear el usuario', 500, null ,$e->getMessage(), "DATABASE_ERROR");
-    //     }catch(Exception $e){
-    //         return $this->handleResponse(false, 'Error inesperado del servidor', 500, null , $e->getMessage(), "SERVER_ERROR");
-    //     }
-    // }
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
+        try{
+            $this->service->modify($id, $request->input('name'), $request->input('email'));
+            return $this->handleResponse(true, "Datos guardados correctamente", 200, null);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelva a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde',500, null, $e->getMessage(), "SERVER_ERROR");
+        }
 
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -99,6 +86,39 @@ class UserController extends Controller
         //
     }
 
+    /*Método para enviar código por correo al usuario*/
+    public function sendCode(Request $request){
+        try{
+            $response = $this->service->sendCode($request->input('email'));
+            return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);
+        }catch(DuplicateCodeException $e){ 
+            return $this->handleResponse(false, "Ya existe un código vigente en este momento", 500, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Ocurrió un error inesperado en el servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }        
+    }
+
+    /*Método para verificar código por correo al usuario*/
+    public function verifyCode(Request $request){
+        try{
+            $response = $this->service->verifyCode($request->input('email'), $request->input('code'));
+            return $this->handleResponse(true, "La validación del código fue correcta.", 200, null);
+        }catch(Exception $e){
+            return $this->handleResponse(false,$e->getMessage(), 400, null, $e->getMessage(), "SERVER_ERROR");
+        }
+    }
+    /*Método para cambiar la contraseña del usuario*/
+    public function changePass(Request $request, Int $userId){
+        try{
+            $response = $this->service->changePass($userId, $request->input('newPass'));
+            return $this->handleResponse(true, 'Contraseña modificada correctamente', 200, null);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Ocurrió un error al modificar la contraseña, vuelva a intentarlo", 400, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Ocurrió un error inesperado del servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }
+    }
+    /*Método para gestionar el login del usuario*/
     public function login(LoginRequest $request)
     {
         try{
@@ -110,7 +130,7 @@ class UserController extends Controller
             return $this->handleResponse(false, 'Credenciales incorrectas', 500, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
-
+    /*Método para gestionar el cierre de sesión del usuario*/
     public function logout(Request $request){
         try{
             $this->service->logout($request);
