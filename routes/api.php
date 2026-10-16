@@ -14,14 +14,15 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class, 'logout']);
 
     //CÓDIGO DE VALIDACIÓN PARA ENVIAR AL EMAIL; 
-    Route::post('/user/code', [UserController::class, 'sendCode']);
-    Route::post('/user/code/verify', [UserController::class, 'verifyCode']);
+    Route::post('/users/code', [UserController::class, 'sendCode']);
+    Route::post('/users/code/verify', [UserController::class, 'verifyCode']);
     
     //USERS
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::patch('/users/{id}', [UserController::class, 'edit']);
     Route::post('/users/save/{id?}', [UserController::class, 'storeOrUpdate']);
+    Route::patch('/users/{id}', [UserController::class, 'edit']);
+    Route::patch('/users/change_pass', [UserController::class, 'change_pass']);
 
     //PRODUCTS
     Route::get('/products', [ProductController::class, 'index']);
