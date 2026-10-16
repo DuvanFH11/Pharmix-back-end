@@ -107,6 +107,17 @@ class UserController extends Controller
             return $this->handleResponse(false,$e->getMessage(), 400, null, $e->getMessage(), "SERVER_ERROR");
         }
     }
+    /*Método para cambiar la contraseña del usuario*/
+    public function changePass(Request $request, Int $userId){
+        try{
+            $response = $this->service->changePass($userId, $request->input('newPass'));
+            return $this->handleResponse(true, 'Contraseña modificada correctamente', 200, null);
+        }catch(QueryException $e){
+            return $this->handleResponse(false, "Ocurrió un error al modificar la contraseña, vuelva a intentarlo", 400, null, $e->getMessage(), "DATABASE_ERROR");
+        }catch(Exception $e){
+            return $this->handleResponse(false, "Ocurrió un error inesperado del servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
+        }
+    }
     /*Método para gestionar el login del usuario*/
     public function login(LoginRequest $request)
     {

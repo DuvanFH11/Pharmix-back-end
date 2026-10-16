@@ -91,7 +91,7 @@ Class UserService{
         }
 
     }
-    public function modify(Int $id, String $name, String $email){
+    public function modify( $id, $name, $email){
         try{
             DB::beginTransaction();
             $user = User::findOrFail($id);
@@ -106,6 +106,21 @@ Class UserService{
         }catch(Exception $e){
             DB::rollBack();
             throw $e;
+        }
+    }
+    public function changePass(Int $id , String $password){
+        try{
+            DB::beginTransaction();
+            $user = User::findOrFail($id);
+            $user->password = $password;
+            $user->save();
+            DB::commit();
+        }catch(QueryException $e){
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }catch(Exception $e){
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
         }
     }
     public function login(array $data){

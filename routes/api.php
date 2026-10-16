@@ -20,9 +20,9 @@ Route::middleware('auth:sanctum')->group(function(){
     //USERS
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::post('/users/save/{id?}', [UserController::class, 'storeOrUpdate']);
     Route::patch('/users/{id}', [UserController::class, 'edit']);
-    Route::patch('/users/change_pass', [UserController::class, 'change_pass']);
+    Route::post('/users/save/{id?}', [UserController::class, 'storeOrUpdate']);
+    Route::patch('/users/change_pass/{id}', [UserController::class, 'changePass']);
 
     //PRODUCTS
     Route::get('/products', [ProductController::class, 'index']);
