@@ -19,7 +19,7 @@ Class RoleService{
         ->paginate(4);
         return([
             "data" => $roles->items(),
-            "total" => $roles->total(),
+            "total" => $roles->lastPage(),
             "per_page" => $roles->perPage(),
             "page" => $roles->currentPage()
         ]);
