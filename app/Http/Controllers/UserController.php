@@ -20,123 +20,58 @@ class UserController extends Controller
     public function __construct(
         protected UserService $service
     ){}
-
-    /*Método para sacar la información del usuario que tiene sesión iniciada*/
+    //Método para consultar todos los usuarios
+    public function index(Request $request){
+        $response = $this->service->getAll($request->query('email'), $request->query('page'));
+        return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
+    }
+    //Método para crear o modificar un usuario
+    public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
+        $response = $this->service->storeOrUpdate($userRequest, $userId);
+        return $this->handleResponse(true, 'Datos guardados correctamente',200, $response);
+    }
+    //Método para consultar un usuario en específico
+    public function show(Int $userId){
+        $response = $this->service->show($userId);
+        return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
+    }
+    //Método para sacar la información del usuario que tiene sesión iniciada
     public function showUser(Request $request){
         return $this->service->showUserActive($request);
     }
-    /* Método para sacar todos los registro de la tabla usuarios*/
-    public function index(Request $request)
-    {
-        try{
-            $response = $this->service->getAll($request->query('email'), $request->query('page'));
-            return $this->handleResponse(true, 'Se cargaron los usuarios correctamente', 200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+    //Método para actualizar ciertos valores de un usuario
+    public function edit(string $id, Request $request){
+        $this->service->modify($id, $request->input('name'), $request->input('email'));
+        return $this->handleResponse(true, "Datos guardados correctamente", 200, null);
     }
-    /*Método para consultar para crear o actualizar un registro*/
-    public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
-        try{
-            $response = $this->service->storeOrUpdate($userRequest, $userId);
-            return $this->handleResponse(true, 'Datos guardados correctamente',200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+    //Método para cambiar la contraseña del usuario
+    public function changePass(Request $request, Int $userId){
+        $response = $this->service->changePass($userId, $request->input('newPass'));
+        return $this->handleResponse(true, 'Contraseña modificada correctamente', 200, null);
     }
-
-    /*Método para sacar el registro de cualquier usuario por su Id*/
-    public function show(Int $userId)
-    {
-        try{
-            $response = $this->service->show($userId);
-            return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
-        // return $this->service->show($request);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id, Request $request)
-    {
-        try{
-            $this->service->modify($id, $request->input('name'), $request->input('email'));
-            return $this->handleResponse(true, "Datos guardados correctamente", 200, null);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelva a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde',500, null, $e->getMessage(), "SERVER_ERROR");
-        }
-
-    }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
+    //Método para eliminar o desactivar un usuario
+    public function destroy(string $id){
         //
     }
 
-    /*Método para enviar código por correo al usuario*/
+    //Método para enviar código por correo al usuario
     public function sendCode(Request $request){
-        try{
-            $response = $this->service->sendCode($request->input('email'));
-            return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);
-        }catch(DuplicateCodeException $e){ 
-            return $this->handleResponse(false, "Ya existe un código vigente en este momento", 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, "Ocurrió un error inesperado en el servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
-        }        
+        $response = $this->service->sendCode($request->input('email'));
+        return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);        
     }
-
-    /*Método para verificar código por correo al usuario*/
+    //Método para verificar código por correo al usuario
     public function verifyCode(Request $request){
-        try{
-            $response = $this->service->verifyCode($request->input('email'), $request->input('code'));
-            return $this->handleResponse(true, "La validación del código fue correcta.", 200, null);
-        }catch(Exception $e){
-            return $this->handleResponse(false,$e->getMessage(), 400, null, $e->getMessage(), "SERVER_ERROR");
-        }
+        $response = $this->service->verifyCode($request->input('email'), $request->input('code'));
+        return $this->handleResponse(true, "La validación del código fue correcta.", 200, null);
     }
-    /*Método para cambiar la contraseña del usuario*/
-    public function changePass(Request $request, Int $userId){
-        try{
-            $response = $this->service->changePass($userId, $request->input('newPass'));
-            return $this->handleResponse(true, 'Contraseña modificada correctamente', 200, null);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, "Ocurrió un error al modificar la contraseña, vuelva a intentarlo", 400, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, "Ocurrió un error inesperado del servidor, lo sentimos", 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+    //Método para gestionar el login del usuario
+    public function login(LoginRequest $request){
+        $this->service->login($request->validated());
+        return $this->handleResponse(true, 'Inicio de sesión exitoso', 200);
     }
-    /*Método para gestionar el login del usuario*/
-    public function login(LoginRequest $request)
-    {
-        try{
-            $this->service->login($request->validated());
-            return $this->handleResponse(true, 'Inicio de sesión exitoso', 200);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'No fue posible iniciar sesión', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'Credenciales incorrectas', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
-    }
-    /*Método para gestionar el cierre de sesión del usuario*/
+    //Método para gestionar el cierre de sesión del usuario
     public function logout(Request $request){
-        try{
-            $this->service->logout($request);
-            return $this->handleResponse(true, 'Sesión cerrada correctamente', 200, null);
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'Error inesperado del servidor', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+        $this->service->logout($request);
+        return $this->handleResponse(true, 'Sesión cerrada correctamente', 200, null);
     }
 }
