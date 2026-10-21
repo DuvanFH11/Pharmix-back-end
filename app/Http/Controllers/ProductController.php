@@ -5,89 +5,36 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    //Instancia del servicio de productos
     public function __construct(
         protected ProductService $service
     ){}
-    /**
-     * Display a listing of the resource.
-     */
+    //Método para consultar todos los productos
     public function index(Request $request)
     {
-        try{
-            $response = $this->service->getAll($request->query('value'));
-            return $this->handleResponse(true, "Se cargaron los productos correctamente", 200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, "Error al conectar con la base de datos", 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, "Error inesperado del servidor", 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+        $response = $this->service->getAll($request->query('value'));
+        return $this->handleResponse(true, "Se cargaron los productos correctamente", 200, $response);
     }
+    //Método para crear o modificar un producto
     public function storeOrUpdate(ProductRequest $productRequest, ?int $id = null){
-        try{
-            $response = $this->service->storeOrUpdate($productRequest, $id);
-            return $this->handleResponse(true, 'Datos guardados correctamente', 200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
+        $this->service->storeOrUpdate($productRequest, $id);
+        return $this->handleResponse(true, 'Datos guardados correctamente', 200, null);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    //Método para consultar un producto en específico
+    public function show(Int $productId){
+        $response = $this->service->show($productId);
+        return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ProductRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Int $productId)
-    {
-        try{
-            $response = $this->service->show($productId);
-            return $this->handleResponse(true, 'Usuario cargado correctamente', 200, $response);
-        }catch(QueryException $e){
-            return $this->handleResponse(false, 'Lo sentimos, algo salió mal al procesar la solicitud, vuelve a intentarlo.', 500, null, $e->getMessage(), "DATABASE_ERROR");
-        }catch(Exception $e){
-            return $this->handleResponse(false, 'El sistema no está disponible temporalmente, intentalo más tarde.', 500, null, $e->getMessage(), "SERVER_ERROR");
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //Método para editar ciertos valores de un producto
     public function edit(Product $product)
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    //Método para eliminar o desactivar un producto
     public function destroy(Product $product)
     {
         //
