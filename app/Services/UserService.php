@@ -46,7 +46,7 @@ Class UserService{
         // dd($users);
         return([
             'data' => $users->items(),
-            'total' => $users->total(),
+            'total' => $users->lastPage(),
             'per_page' => $users->perPage(),
             'page' => $users->currentPage()
         ]);
