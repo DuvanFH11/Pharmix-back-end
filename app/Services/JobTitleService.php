@@ -33,22 +33,13 @@ Class JobTitleService{
     }
 
     public function storeOrUpdate($data, $id){
-        try{   
-            $jobTitleData = [
-                'code' => $data['code'],
-                'name' => $data['name'],
-                'description' => $data['description']
-            ];
-
-            DB::beginTransaction();
-            JobTitle::updateOrcreate(['id' => $id], $jobTitleData);
-            DB::commit();        
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
-        }catch(Exception $e){
-            DB::rollBack();
-            throw $e;
-        }
+        $jobTitleData = [
+            'code' => $data['code'],
+            'name' => $data['name'],
+            'description' => $data['description']
+        ];
+        return DB::transaction(function() use($id,$jobTitleData){
+            return JobTitle::updateOrcreate(['id' => $id], $jobTitleData);
+        });
     }
 }

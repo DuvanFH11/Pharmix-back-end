@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 Class UserService{
     
@@ -25,7 +26,6 @@ Class UserService{
     }
 
     public function showUserActive($request){
-        // return $request->user();
         $userId = $request->user()->id;
 
         $userData = User::select(['id','name','email', 'user_role', 'user_job_title'])
@@ -36,14 +36,12 @@ Class UserService{
     }
 
     public function getAll($userEmail, $page){
-        
         $users = $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
         ->with(['user_role:id,name','user_job_title:id,name'])
         ->when($userEmail, function ($query, $userEmail){
             return $query->where('email', 'LIKE', '%'.$userEmail.'%');
         })
         ->paginate(4, ['*'], 'page', $page);
-        // dd($users);
         return([
             'data' => $users->items(),
             'total' => $users->lastPage(),
@@ -52,80 +50,41 @@ Class UserService{
         ]);
     }
     public function storeOrUpdate($data,$id){
-        try{
-            $userData = [
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'user_role' => $data['user_role'],
-                'user_job_title' => $data['user_job_title']    
-            ];
-            if(!$id){
-                $userData['password'] = $data['email'];
-            }
-
-            DB::beginTransaction();
-            User::updateOrCreate(['id' => $id],$userData);
-            DB::commit();
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'user_role' => $data['user_role'],
+            'user_job_title' => $data['user_job_title']    
+        ];
+        if(!$id){
+            $userData['password'] = $data['email'];
         }
-
+        return DB::transaction(function() use($id, $userData){
+            return User::updateOrcreate(['id' => $id], $userData);
+        });
     }
 
     public function create(array $data){
-        try{
-            DB::beginTransaction(); //Iniciamos transacción. 
-            $response = $this->model->create($data);
-            DB::commit();
-            return $response;
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e; //Retornamos error de consulta;
-        }catch(Exception $e){
-            DB::rollback();
-            throw $e; //Retornamos error generico;
-        }
-
+        return DB::transaction(function() use($data){
+            return $this->model->create($data);   
+        });
     }
     public function modify( $id, $name, $email){
-        try{
-            DB::beginTransaction();
-            $user = User::findOrFail($id);
-            $user->name = $name;
-            $user->email = $email;
-            $user->save();
-            DB::commit();
-            return true;
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
-        }catch(Exception $e){
-            DB::rollBack();
-            throw $e;
-        }
+        $user = User::findOrFail($id);
+        return $user->update([
+            'name' => $name,
+            'email' => $email
+        ]);
     }
     public function changePass(Int $id , String $password){
-        try{
-            DB::beginTransaction();
-            $user = User::findOrFail($id);
-            $user->password = $password;
-            $user->save();
-            DB::commit();
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw new \Exception($e->getMessage());
-        }catch(Exception $e){
-            DB::rollBack();
-            throw new \Exception($e->getMessage());
-        }
+        $user = User::findOrFail($id);
+        
+        return $user->update(['password' => $password]);
     }
+
     public function login(array $data){
         if(!Auth::attempt($data)){
-            throw new \Exception('Unauthorized', 401);
+            throw new ValidationException('Las credenciales son incorrectas');
         }
         return true;
     }

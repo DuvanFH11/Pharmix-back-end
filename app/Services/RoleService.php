@@ -30,21 +30,13 @@ Class RoleService{
     }
 
     public function storeOrUpdate($data, $id){
-        try{
-            $roleData = [
-                'code' => $data['code'],
-                'name' => $data['name'],
-                'description' => $data['description']
-            ];
-            DB::begintransaction();
-            Role::updateOrcreate(['id' => $id], $roleData);
-            DB::commit();
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
-        }catch(Exception $e){
-            DB::rollBack();
-            throw $e;
-        }
+        $roleData = [
+            'code' => $data['code'],
+            'name' => $data['name'],
+            'description' => $data['description']
+        ];
+        return DB::transaction(function() use($id, $roleData){
+            return Role::updateOrcreate(['id' => $id ], $roleData);
+        });
     }
 }

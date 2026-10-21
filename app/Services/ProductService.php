@@ -36,26 +36,18 @@ Class ProductService{
     }
 
     public function storeOrUpdate($data, $id){
-        try{ 
-            $productData = [
-                'name' => $data['name'],
-                'brand' => $data['brand'],
-                'description' => $data['description'],
-                'package_price' => $data['package_price'],
-                'unit_price' => $data['unit_price'],
-                'invima_registration' => $data['invima_registration'],
-                'strength' => $data['strength'],
-                'unit' => $data['unit']
-            ];
-            DB::beginTransaction(); 
-                Product::updateOrcreate(['id' => $id], $productData);
-            DB::commit();
-        }catch(QueryException $e){
-            DB::rollBack();
-            throw $e;
-        }catch(Exception $e){
-            DB::rollBack();
-            throw $e;
-        }
+        $productData = [
+            'name' => $data['name'],
+            'brand' => $data['brand'],
+            'description' => $data['description'],
+            'package_price' => $data['package_price'],
+            'unit_price' => $data['unit_price'],
+            'invima_registration' => $data['invima_registration'],
+            'strength' => $data['strength'],
+            'unit' => $data['unit']
+        ];
+        return DB::transaction(function() use($id, $productData){
+            return Product::updateOrcreate(['id' => $id], $productData);
+        });
     }
 }
