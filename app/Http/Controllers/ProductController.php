@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

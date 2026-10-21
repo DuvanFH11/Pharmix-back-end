@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 use App\Services\RoleService;
-use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller

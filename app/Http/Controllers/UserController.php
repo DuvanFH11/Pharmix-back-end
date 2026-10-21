@@ -1,17 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Exceptions\DuplicateCodeException;
-use App\Exceptions\ExpiredCodeException;
-use App\Exceptions\InvalidCodeException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
-use App\Models\User;
 use App\Services\UserService;
-use Exception;
-use FFI\Exception as FFIException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
