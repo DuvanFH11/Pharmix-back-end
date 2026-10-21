@@ -23,8 +23,8 @@ class ProductController extends Controller
     }
     //Método para crear o modificar un producto
     public function storeOrUpdate(ProductRequest $productRequest, ?int $id = null){
-        $response = $this->service->storeOrUpdate($productRequest, $id);
-        return $this->handleResponse(true, 'Datos guardados correctamente', 200, $response);
+        $this->service->storeOrUpdate($productRequest, $id);
+        return $this->handleResponse(true, 'Datos guardados correctamente', 200, null);
     }
     //Método para consultar un producto en específico
     public function show(Int $productId){

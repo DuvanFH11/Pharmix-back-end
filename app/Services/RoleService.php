@@ -36,7 +36,7 @@ Class RoleService{
             'description' => $data['description']
         ];
         return DB::transaction(function() use($id, $roleData){
-            return Role::updateOrcreate(['id' => $id ], $roleData);
+            return Role::updateOrCreate(['id' => $id ], $roleData);
         });
     }
 }

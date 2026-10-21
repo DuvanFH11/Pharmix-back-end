@@ -47,7 +47,7 @@ Class ProductService{
             'unit' => $data['unit']
         ];
         return DB::transaction(function() use($id, $productData){
-            return Product::updateOrcreate(['id' => $id], $productData);
+            return Product::updateOrCreate(['id' => $id], $productData);
         });
     }
 }

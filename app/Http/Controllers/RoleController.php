@@ -22,8 +22,8 @@ class RoleController extends Controller
     }
     //Método para crear o actualizar un rol
     public function storeOrUpdate(RoleRequest $roleRequest, ?int $id = null){
-        $response = $this->service->storeOrUpdate($roleRequest, $id);
-        return $this->handleResponse(true, "Datos guardados correctamente", 200, $response);
+        $this->service->storeOrUpdate($roleRequest, $id);
+        return $this->handleResponse(true, "Datos guardados correctamente", 200, null);
     }
     //Método para consultar un rol en específico
     public function show(int $roleId){

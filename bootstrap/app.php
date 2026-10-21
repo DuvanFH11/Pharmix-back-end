@@ -52,7 +52,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     $e instanceof DuplicateCodeException => 
                         handleResponseError(false, 'Ya existe un código activo actualmente, ingreselo por favor', 422, class_basename($e), 'DUPLICATE_CODE'),
                     default => 
-                        handleResponseError(false, 'El sistema no está disponible temporalmente, inténtalo más tarde', 500, class_basename($e),'SERVER_ERROR')
+                        handleResponseError(false, 'El sistema no está disponible temporalmente, inténtalo más tarde', 500, class_basename($e->getMessage()),'SERVER_ERROR')
                 };
             }
         });

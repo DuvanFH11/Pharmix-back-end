@@ -60,7 +60,7 @@ Class UserService{
             $userData['password'] = $data['email'];
         }
         return DB::transaction(function() use($id, $userData){
-            return User::updateOrcreate(['id' => $id], $userData);
+            return User::updateOrCreate(['id' => $id], $userData);
         });
     }
 

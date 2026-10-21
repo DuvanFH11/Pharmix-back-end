@@ -27,8 +27,8 @@ class UserController extends Controller
     }
     //Método para crear o modificar un usuario
     public function storeOrUpdate(UserRequest $userRequest, ?Int $userId = null){
-        $response = $this->service->storeOrUpdate($userRequest, $userId);
-        return $this->handleResponse(true, 'Datos guardados correctamente',200, $response);
+        $this->service->storeOrUpdate($userRequest, $userId);
+        return $this->handleResponse(true, 'Datos guardados correctamente',200, null);
     }
     //Método para consultar un usuario en específico
     public function show(Int $userId){
@@ -46,7 +46,7 @@ class UserController extends Controller
     }
     //Método para cambiar la contraseña del usuario
     public function changePass(Request $request, Int $userId){
-        $response = $this->service->changePass($userId, $request->input('newPass'));
+        $this->service->changePass($userId, $request->input('newPass'));
         return $this->handleResponse(true, 'Contraseña modificada correctamente', 200, null);
     }
     //Método para eliminar o desactivar un usuario
@@ -56,12 +56,12 @@ class UserController extends Controller
 
     //Método para enviar código por correo al usuario
     public function sendCode(Request $request){
-        $response = $this->service->sendCode($request->input('email'));
+        $this->service->sendCode($request->input('email'));
         return $this->handleResponse(true, "Se envió el correo correctamente", 200, null);        
     }
     //Método para verificar código por correo al usuario
     public function verifyCode(Request $request){
-        $response = $this->service->verifyCode($request->input('email'), $request->input('code'));
+        $this->service->verifyCode($request->input('email'), $request->input('code'));
         return $this->handleResponse(true, "La validación del código fue correcta.", 200, null);
     }
     //Método para gestionar el login del usuario

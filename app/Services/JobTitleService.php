@@ -39,7 +39,7 @@ Class JobTitleService{
             'description' => $data['description']
         ];
         return DB::transaction(function() use($id,$jobTitleData){
-            return JobTitle::updateOrcreate(['id' => $id], $jobTitleData);
+            return JobTitle::updateOrCreate(['id' => $id], $jobTitleData);
         });
     }
 }
