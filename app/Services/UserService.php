@@ -36,18 +36,28 @@ Class UserService{
     }
 
     public function getAll($userEmail, $page){
-        $users = $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
+        $query = $this->model->select(['id','name','email', 'user_role', 'user_job_title'])
         ->with(['user_role:id,name','user_job_title:id,name'])
         ->when($userEmail, function ($query, $userEmail){
             return $query->where('email', 'LIKE', '%'.$userEmail.'%');
-        })
-        ->paginate(4, ['*'], 'page', $page);
-        return([
-            'data' => $users->items(),
-            'total' => $users->lastPage(),
-            'per_page' => $users->perPage(),
-            'page' => $users->currentPage()
-        ]);
+        });
+        if($page){
+            $users = $query->paginate(4, ['*'], 'page', $page);
+            return([
+                'data' => $users->items(),
+                'total' => $users->lastPage(),
+                'per_page' => $users->perPage(),
+                'page' => $users->currentPage()
+            ]);
+        }else{
+            $allUsers = $query->get();
+            return([
+                'data' => $allUsers,
+                'total'=> $allUsers->count(),
+                'per_page' => null,
+                'page' => null
+            ]);
+        }
     }
     public function storeOrUpdate($data,$id){
         $userData = [

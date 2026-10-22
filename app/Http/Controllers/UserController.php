@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /*Instanciamos el servicio para poder usarlo en los métodos*/ 
+    //Instanciamos el servicio
     public function __construct(
         protected UserService $service
     ){}

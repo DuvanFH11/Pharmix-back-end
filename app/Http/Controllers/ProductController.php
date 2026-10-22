@@ -16,7 +16,7 @@ class ProductController extends Controller
     //Método para consultar todos los productos
     public function index(Request $request)
     {
-        $response = $this->service->getAll($request->query('value'));
+        $response = $this->service->getAll($request->query('value'), $request->query('page'));
         return $this->handleResponse(true, "Se cargaron los productos correctamente", 200, $response);
     }
     //Método para crear o modificar un producto
