@@ -13,19 +13,28 @@ Class JobTitleService{
     ){}
 
 
-    public function getAll($jobTitleCode){
-        $jobTitles = $this->model->select(['id', 'code', 'name', 'description'])
+    public function getAll($jobTitleCode, $page){
+        $query = $this->model->select(['id', 'code', 'name', 'description'])
         ->when($jobTitleCode, function($query, $jobTitleCode){
             return $query->where('code', 'LIKE', '%'. $jobTitleCode .'%');
-        })
-        ->paginate(4);
-
-        return([
-            "data" => $jobTitles->items(),
-            "total" => $jobTitles->lastPage(),
-            "per_page" => $jobTitles->perPage(),
-            "page" => $jobTitles->currentPage()
-        ]);
+        });
+        if($page){
+            $jobTitles = $query->paginate(4, ['*'], 'page', $page);
+            return([
+                "data" => $jobTitles->items(),
+                "total" => $jobTitles->lastPage(),
+                "per_page" => $jobTitles->perPage(),
+                "page" => $jobTitles->currentPage()
+            ]);
+        }else{
+            $allJobTitles = $query->get();
+            return([
+                "data" => $allJobTitles,
+                "total" => $allJobTitles->count(),
+                "per_page" => null,
+                "page" => null
+            ]);
+        }
     }
     
     public function show(int $jobTitleId){

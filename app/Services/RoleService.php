@@ -11,18 +11,28 @@ Class RoleService{
         protected Role $model
     ){}
 
-    public function getAll($roleCode){
-        $roles =  $this->model->select(['id','code','name', 'description'])
+    public function getAll($roleCode, $page){
+        $query =  $this->model->select(['id','code','name', 'description'])
         ->when($roleCode, function($query, $roleCode){
             return $query->where('code', 'LIKE', '%'.$roleCode.'%');
-        })
-        ->paginate(4);
-        return([
-            "data" => $roles->items(),
-            "total" => $roles->lastPage(),
-            "per_page" => $roles->perPage(),
-            "page" => $roles->currentPage()
-        ]);
+        });
+        if($page){
+            $roles = $query->paginate(4);
+            return([
+                "data" => $roles->items(),
+                "total" => $roles->lastPage(),
+                "per_page" => $roles->perPage(),
+                "page" => $roles->currentPage()
+            ]);
+        }else{
+            $allRoles = $query->get();
+            return([
+                "data" => $allRoles,
+                "total" => $allRoles->count(),
+                "per_page" => null,
+                "page" => null
+            ]);
+        }
     }
 
     public function show(int $roleId){

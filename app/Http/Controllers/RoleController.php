@@ -15,7 +15,7 @@ class RoleController extends Controller
     ){}
     //Método para consultar todos los roles
     public function index(Request $request){
-        $response = $this->service->getAll($request->query('code'));
+        $response = $this->service->getAll($request->query('code'), $request->query('page'));
         return $this->handleResponse(true, 'Se cargaron los roles correctamente', 200, $response);
     }
     //Método para crear o actualizar un rol

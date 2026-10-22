@@ -15,7 +15,7 @@ class JobTitleController extends Controller
     ){}
     //Método para mostrar todos los registros
     public function index(Request $request){
-        $response = $this->service->getAll($request->query('code'));
+        $response = $this->service->getAll($request->query('code'), $request->query('page'));
         return $this->handleResponse(true, 'Se cargaron los cargos correctamente', 200, $response);
     }
     //Método para mostrar un registro

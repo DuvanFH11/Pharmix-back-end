@@ -12,22 +12,31 @@ Class ProductService{
         protected Product $model
     ){}
 
-    public function getAll($value){
-        $products = $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])
+    public function getAll($value, $page){
+        $query= $this->model->select(['id', 'name', 'brand','description', 'unit_price', 'package_price', 'invima_registration', 'strength', 'unit'])
          ->when($value, function($query, $value){
             return $query->where(function($subquery) use ($value) {
-                $subquery->where('invima_registration', 'LIKE', '%'.$value.'%')
+                $subquery->where('invima_registration', '=', $value)
                         ->orWhere('name', 'LIKE', '%'.$value.'%');
             });
-        })
-        ->paginate(4);
-
-        return ([
-            "data" => $products->items(),
-            "total" => $products->lastPage(),
-            "per_page" => $products->perPage(),
-            "page" => $products->currentPage()
-        ]); 
+        });
+        if($page){
+            $products = $query->paginate(4, ['*'], 'page', $page);
+            return ([
+                "data" => $products->items(),
+                "total" => $products->lastPage(),
+                "per_page" => $products->perPage(),
+                "page" => $products->currentPage()
+            ]); 
+        }else{
+            $allProducts = $query->get();
+            return([
+                "data" => $allProducts,
+                "total" => $allProducts->count(),
+                "per_page" => null,
+                "page" => null
+            ]);
+        }
     }
 
     public function show($productId){
